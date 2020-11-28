@@ -1,9 +1,9 @@
-.popup__input_heading {
+.popup__input_text_heading {
   margin-top: 41px;
 }
 
 @media all and (max-width:620px) {
-  .popup__input_heading {
+  .popup__input_text_heading {
     margin-top: 67px;
   }
 }
