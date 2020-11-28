@@ -25,8 +25,8 @@ popupButtonClose.addEventListener('click', handeleButtonCloseClick);
 const popupForm = document.querySelector('.popup__form');
 const profileHeading = document.querySelector('.profile__heading');
 const profileSubheading = document.querySelector('.profile__subheading');
-const popupInputHeading = document.querySelector('.popup__input-heading');
-const popupInputSubheading = document.querySelector('.popup__input-subheading');
+const popupInputHeading = document.querySelector('.popup__input_heading');
+const popupInputSubheading = document.querySelector('.popup__input_subheading');
 
 function handleFormSubmit(event) {
   event.preventDefault();

@@ -1,4 +1,4 @@
-.popup__input-subheading {
+.popup__input {
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   font-style: normal;
@@ -8,7 +8,5 @@
   display: block;
   width: 100%;
   color: #000000;
-  margin-top: 23px;
   height: 30px;
 }
-
