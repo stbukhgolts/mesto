@@ -11,8 +11,8 @@ const popupInputSubheading = document.querySelector('.popup__input_subheading');
 //открыть попап
 function handleButtonEditClick() {
   popup.classList.add('popup_opened');
-  popupInputHeading.value = profileHeading.textContent
-  popupInputSubheading.value = profileSubheading.textContent
+  popupInputHeading.value = profileHeading.textContent;
+  popupInputSubheading.value = profileSubheading.textContent;
 }
 
 //закрыть попап
