@@ -26,9 +26,9 @@ const initialCards = [
 ]; 
 
 
-const popupEdit = document.querySelector('.popup__edit');
-const popupAdd = document.querySelector('.popup__add');
-const popupImage = document.querySelector('.popup__view-image');
+const popupEdit = document.querySelector('.popup__type_edit');
+const popupAdd = document.querySelector('.popup__type_add');
+const popupImage = document.querySelector('.popup__type_view-image');
 const profileButtonEdit = document.querySelector('.profile__button-edit');
 const popupAddButtonClose = popupAdd.querySelector('.popup__button-close')
 const popupEditButtonClose = popupEdit.querySelector('.popup__button-close');
@@ -46,7 +46,6 @@ const imgSrcInput = popupAdd.querySelector('.popup__input_text_src');
 const popupFormAdd = popupAdd.querySelector('.popup__form');
 const template = document.querySelector('.template');
 
-const popupViewImage = document.querySelector('.popup__view-image');
 
 
 //функция удаления карточки
@@ -118,7 +117,7 @@ function handleButtonAddClick() {
 
 //открыть попап картинки
 function handleImageClick(name, link) {
-  openPop(popupViewImage);
+  openPop(popupImage);
   const popupImageSrc = popupImage.querySelector('.popup__image');
   popupImageSrc.src = link;
   const popupImageCaption = popupImage.querySelector('.popup__caption');
