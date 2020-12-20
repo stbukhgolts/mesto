@@ -26,9 +26,9 @@ const initialCards = [
 ]; 
 
 
-const popupEdit = document.querySelector('.popup__type_edit');
-const popupAdd = document.querySelector('.popup__type_add');
-const popupImage = document.querySelector('.popup__type_view-image');
+const popupEdit = document.querySelector('.popup_type_edit');
+const popupAdd = document.querySelector('.popup_type_add');
+const popupImage = document.querySelector('.popup_type_view-image');
 const profileButtonEdit = document.querySelector('.profile__button-edit');
 const popupAddButtonClose = popupAdd.querySelector('.popup__button-close')
 const popupEditButtonClose = popupEdit.querySelector('.popup__button-close');
