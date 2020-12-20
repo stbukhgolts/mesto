@@ -15,10 +15,6 @@
   cursor: pointer;
 }
 
-.element__like:active {
-  background: url(../../element/images/likeActive.svg) center no-repeat;
-}
-
 .element__like:focus {
   outline: none;
 }
