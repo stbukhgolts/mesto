@@ -35,54 +35,6 @@
     </section>
 
     <section class="elements">
-<!--       <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-karachaevsk.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Карачаевск</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article>
-
-      <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-elbrus.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Гора Эльбрус</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article>
-
-      <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-dombaj.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Домбай</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article>
-
-      <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-elbrus2.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Гора Эльбрус</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article>
-
-      <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-dombaj2.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Домбай</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article>
-
-
-      <article class="element">
-        <img class="element__photo" src="./blocks/element/images/elements-karachaevo-cherk.jpg" alt="фото места">
-        <div class="element__caption">
-          <h2 class="element__heading">Карачаево-Черкесия</h2>
-          <button type="button" class="element__like"></button>
-        </div>
-      </article> -->
 
     </section>
 
@@ -109,8 +61,8 @@
       <button type="button" class="popup__button-close popup__button-close"></button>
       <form class="popup__form" name="form">
         <h2 class="popup__heading">Новое место</h2>
-        <input type="text" name="heading" class="popup__input popup__input_text_heading">
-        <input type="text" name="subheading" class="popup__input popup__input_text_src">
+        <input type="text" placeholder="Название" name="place" class="popup__input popup__input_text_heading">
+        <input type="text" placeholder="Ссылка на картинку" name="src" class="popup__input popup__input_text_src">
         <button class="popup__button-submit">Создать</button>
       </form>
     </div>
@@ -135,6 +87,8 @@
     </article>
   </template>
 
+  <script src="./scripts/initial-cards.js"></script>
   <script src="./scripts/script.js"></script>
+
 </body>
 </html>

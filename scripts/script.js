@@ -1,31 +1,3 @@
-const initialCards = [
-  {
-      name: 'Архыз',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-      name: 'Челябинская область',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-      name: 'Иваново',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-      name: 'Камчатка',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-      name: 'Холмогорский район',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-      name: 'Байкал',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-]; 
-
-
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupImage = document.querySelector('.popup_type_view-image');
@@ -45,91 +17,78 @@ const imgTitleInput = popupAdd.querySelector('.popup__input_text_heading');
 const imgSrcInput = popupAdd.querySelector('.popup__input_text_src');
 const popupFormAdd = popupAdd.querySelector('.popup__form');
 const template = document.querySelector('.template');
-
-
+const popupImageSrc = popupImage.querySelector('.popup__image');
+const popupImageCaption = popupImage.querySelector('.popup__caption');
 
 //функция удаления карточки
 function removeCard(event) {
-  const targetCard = event.target.closest('.element');
-  targetCard.remove();
+  event.target.closest('.element').remove();
 }
-
-//функия добавления лисенеров на кнопку удаления
-function addEventListenerToButton(cardItem) {
-  const removeButton = cardItem.querySelector('.element__delete');
-  removeButton.addEventListener('click', removeCard);
+//функция лайка
+function handleLikeIcon(event) {
+  event.target.classList.toggle('element__like_active');
+}
+//функция открытия картинки
+function handleImageClick(name, link) {
+  openPopup(popupImage);
+  popupImageSrc.src = link;
+  popupImageSrc.alt = name + '(фото)';
+  popupImageCaption.textContent = name;
 }
 
 //фунция преобразования массива в дом
 function createCard({ name, link }) {
   const card = template.content.cloneNode(true);
-  const text = card.querySelector('.element__heading');
-  text.textContent = name;
-  const img = card.querySelector('.element__photo');
-  img.src = link;
+  const cardText = card.querySelector('.element__heading');
+  const cardImg = card.querySelector('.element__photo');
+  const cardLike = card.querySelector('.element__like')
+  const removeButton = card.querySelector('.element__delete');
+  //задать данные для картинки
+  cardText.textContent = name;
+  cardImg.src = link;
+  cardImg.alt = name + '(фото)';
   //слушать кнопку удалить
-  addEventListenerToButton(card);
+  removeButton.addEventListener('click', removeCard);
   //like
-  card.querySelector('.element__like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('element__like_active');
-  })
+  cardLike.addEventListener('click', handleLikeIcon);
   //картинка
-  card.querySelector('.element__photo').addEventListener('click', () => handleImageClick(text.textContent, img.src));
-
+  cardImg.addEventListener('click', () => handleImageClick(name, link));
   return card;
 }
 
 //закрыть попап
-function handeleButtonCloseClick(popupButtonClose) {
+function closePopup(popupButtonClose) {
   popupButtonClose.classList.remove('popup_opened');
 }
 
 //фунция добавления карточки
-function addCard(event) {
+function handleFormAddCard(event) {
   event.preventDefault();
-  const placeName = imgTitleInput.value;
-  const placeSrc = imgSrcInput.value;
-  const newCard = createCard({ name: placeName, link: placeSrc });
+  const newCard = createCard({ name: imgTitleInput.value, link: imgSrcInput.value });
   elements.prepend(newCard);
-  handeleButtonCloseClick(popupAdd);
-  imgTitleInput.value = '';
-  imgSrcInput.value = '';
+  closePopup(popupAdd);
+  popupFormAdd.reset();
 }
 
 //функция открытия
-function openPop(popName) {
-  popName.classList.add('popup_opened');
+function openPopup(popupName) {
+  popupName.classList.add('popup_opened');
 }
 
 //открыть попап редактирования
 function handleButtonEditClick() {
-  openPop(popupEdit);
+  openPopup(popupEdit);
   popupInputHeading.value = profileHeading.textContent;
   popupInputSubheading.value = profileSubheading.textContent;
 }
 
-//открыть попап добавления
-function handleButtonAddClick() {
-  openPop(popupAdd);
-  imgTitleInput.placeholder = 'Название';
-  imgSrcInput.placeholder = 'Ссылка на картинку';
-}
-
-//открыть попап картинки
-function handleImageClick(name, link) {
-  openPop(popupImage);
-  const popupImageSrc = popupImage.querySelector('.popup__image');
-  popupImageSrc.src = link;
-  const popupImageCaption = popupImage.querySelector('.popup__caption');
-  popupImageCaption.textContent = name;
-}
 
 //ввод заголовка и подзаголовка
 function handleFormSubmit(event) {
   event.preventDefault();
   profileHeading.textContent = popupInputHeading.value;
   profileSubheading.textContent = popupInputSubheading.value;
-  handeleButtonCloseClick(popupEdit);
+  closePopup(popupEdit);
 }
 
 //изначальный массив на экран
@@ -141,16 +100,16 @@ function renderCards() {
 //открыть попап редактирования профайла
 profileButtonEdit.addEventListener('click', handleButtonEditClick);
 //открыть попап добавления места
-addButtonEdit.addEventListener('click', handleButtonAddClick);
+addButtonEdit.addEventListener('click', ()=>openPopup(popupAdd));
 //закрыть попап редактирования профайла
-popupEditButtonClose.addEventListener('click', ()=>handeleButtonCloseClick(popupEdit));
+popupEditButtonClose.addEventListener('click', ()=>closePopup(popupEdit));
 //закрыть попап добавления места
-popupAddButtonClose.addEventListener('click', ()=>handeleButtonCloseClick(popupAdd));
+popupAddButtonClose.addEventListener('click', ()=>closePopup(popupAdd));
 //закрыть попап с картинкой
-popupImageButtonClose.addEventListener('click', ()=>handeleButtonCloseClick(popupImage));
+popupImageButtonClose.addEventListener('click', ()=>closePopup(popupImage));
 //ввод заголовка и подзаголовка
 popupFormEdit.addEventListener('submit', handleFormSubmit);
 //ввод места и урл
-popupFormAdd.addEventListener('submit', addCard);
+popupFormAdd.addEventListener('submit', handleFormAddCard);
 
 renderCards();
