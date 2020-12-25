@@ -19,6 +19,7 @@ const popupFormAdd = popupAdd.querySelector('.popup__form');
 const template = document.querySelector('.template');
 const popupImageSrc = popupImage.querySelector('.popup__image');
 const popupImageCaption = popupImage.querySelector('.popup__caption');
+const popupButtonSubmit = popupEdit.querySelector('.popup__button-submit');
 
 //функция удаления карточки
 function removeCard(event) {
@@ -56,10 +57,26 @@ function createCard({ name, link }) {
   return card;
 }
 
-//закрыть попап
-function closePopup(popupButtonClose) {
-  popupButtonClose.classList.remove('popup_opened');
+//закрытие с escape 
+function closeEscape(evt) {
+  if (evt.key === 'Escape') {
+    const popupName = document.querySelector('.popup_opened');
+    closePopup(popupName);
+  }
 }
+
+//открыть попап
+function openPopup(popupName) {
+  popupName.classList.add('popup_opened');
+  document.addEventListener('keydown', closeEscape);
+}
+
+//закрыть попап
+function closePopup(popupName) {
+  popupName.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeEscape);
+}
+
 
 //фунция добавления карточки
 function handleFormAddCard(event) {
@@ -70,25 +87,21 @@ function handleFormAddCard(event) {
   popupFormAdd.reset();
 }
 
-//функция открытия
-function openPopup(popupName) {
-  popupName.classList.add('popup_opened');
-}
 
 //открыть попап редактирования
 function handleButtonEditClick() {
   openPopup(popupEdit);
   popupInputHeading.value = profileHeading.textContent;
   popupInputSubheading.value = profileSubheading.textContent;
+  setButtonState(popupButtonSubmit, popupFormEdit.checkValidity(), validationConfig);
 }
-
 
 //ввод заголовка и подзаголовка
 function handleFormSubmit(event) {
   event.preventDefault();
   profileHeading.textContent = popupInputHeading.value;
   profileSubheading.textContent = popupInputSubheading.value;
-  closePopup(popupEdit);
+  closePopup(popupEdit, popupEdit);
 }
 
 //изначальный массив на экран
@@ -111,5 +124,20 @@ popupImageButtonClose.addEventListener('click', ()=>closePopup(popupImage));
 popupFormEdit.addEventListener('submit', handleFormSubmit);
 //ввод места и урл
 popupFormAdd.addEventListener('submit', handleFormAddCard);
+
+//закрытие по оверлею
+document.addEventListener('click', (evt) => {
+  if (evt.target.className.includes('popup_type_edit')) {
+    closePopup(popupEdit);
+  }
+  if (evt.target.className.includes('popup_type_add')) {
+    closePopup(popupAdd);
+  }
+  if (evt.target.className.includes('popup_type_view-image')) {
+    closePopup(popupImage);
+  }
+});
+
+
 
 renderCards();
