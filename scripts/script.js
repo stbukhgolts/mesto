@@ -2,9 +2,6 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupImage = document.querySelector('.popup_type_view-image');
 const profileButtonEdit = document.querySelector('.profile__button-edit');
-const popupAddButtonClose = popupAdd.querySelector('.popup__button-close')
-const popupEditButtonClose = popupEdit.querySelector('.popup__button-close');
-const popupImageButtonClose = popupImage.querySelector('.popup__button-close');
 const popupFormEdit = popupEdit.querySelector('.popup__form');
 const profileHeading = document.querySelector('.profile__heading');
 const profileSubheading = document.querySelector('.profile__subheading');
@@ -20,6 +17,7 @@ const template = document.querySelector('.template');
 const popupImageSrc = popupImage.querySelector('.popup__image');
 const popupImageCaption = popupImage.querySelector('.popup__caption');
 const popupButtonSubmit = popupEdit.querySelector('.popup__button-submit');
+const popups = document.querySelectorAll('.popup');
 
 //функция удаления карточки
 function removeCard(event) {
@@ -101,7 +99,7 @@ function handleFormSubmit(event) {
   event.preventDefault();
   profileHeading.textContent = popupInputHeading.value;
   profileSubheading.textContent = popupInputSubheading.value;
-  closePopup(popupEdit, popupEdit);
+  closePopup(popupEdit);
 }
 
 //изначальный массив на экран
@@ -114,30 +112,22 @@ function renderCards() {
 profileButtonEdit.addEventListener('click', handleButtonEditClick);
 //открыть попап добавления места
 addButtonEdit.addEventListener('click', ()=>openPopup(popupAdd));
-//закрыть попап редактирования профайла
-popupEditButtonClose.addEventListener('click', ()=>closePopup(popupEdit));
-//закрыть попап добавления места
-popupAddButtonClose.addEventListener('click', ()=>closePopup(popupAdd));
-//закрыть попап с картинкой
-popupImageButtonClose.addEventListener('click', ()=>closePopup(popupImage));
 //ввод заголовка и подзаголовка
 popupFormEdit.addEventListener('submit', handleFormSubmit);
 //ввод места и урл
 popupFormAdd.addEventListener('submit', handleFormAddCard);
 
-//закрытие по оверлею
-document.addEventListener('click', (evt) => {
-  if (evt.target.className.includes('popup_type_edit')) {
-    closePopup(popupEdit);
-  }
-  if (evt.target.className.includes('popup_type_add')) {
-    closePopup(popupAdd);
-  }
-  if (evt.target.className.includes('popup_type_view-image')) {
-    closePopup(popupImage);
-  }
+//закрытие по оверлею и крестику
+popups.forEach((popup) => {
+    popup.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__button-close')) {
+          closePopup(popup)
+        }
+    })
 });
-
 
 
 renderCards();
