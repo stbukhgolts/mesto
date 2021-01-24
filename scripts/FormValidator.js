@@ -2,6 +2,7 @@ export class FormValidator {
   constructor(config, form) {
     this._config = config;
     this._form = form;
+    this._submitButton = this._form.querySelector(this._config.submitButtonSelector);
   }
 
   //показать ошибку
@@ -37,13 +38,12 @@ export class FormValidator {
 
   _setEventListener(config) {
     const inputList = this._form.querySelectorAll(config.inputSelector);
-    const submitButton = this._form.querySelector(config.submitButtonSelector);
-  
+
     //повесить на каждый инпут обработчик событий
     inputList.forEach((input) => {
       input.addEventListener('input', () => {
         this._checkInputValidity(input, this._config);
-        this._setButtonState(submitButton, this._form.checkValidity(), this._config);
+        this._setButtonState(this._submitButton, this._form.checkValidity(), this._config);
       });
     });
   }
@@ -56,8 +56,7 @@ export class FormValidator {
         evt.preventDefault()});
 
       //при загрузке страницы - все кнопки заблокированы
-      const submitButton = this._form.querySelector(this._config.submitButtonSelector);
-      this._setButtonState(submitButton, this._form.checkValidity(), this._config);
+      this._setButtonState(this._submitButton, this._form.checkValidity(), this._config);
     }
   
 }
