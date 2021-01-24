@@ -1,36 +1,40 @@
 export class Card {
-  constructor(place, cardSelector) {
-    this._place = place;
+  constructor(data, cardSelector, handleCardClick) {
+    this._name = data.name;
+    this._link = data.link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
   }
 
-  render(container) {
-    const cardItem = document.querySelector(this._cardSelector).content.cloneNode(true);
-    cardItem.querySelector('.element__heading').textContent = this._place.name;
-    cardItem.querySelector('.element__photo').src = this._place.link;
-
-    //лайк
-    cardItem.querySelector('.element__like').addEventListener('click', this._handleLikeIcon);
-    //ремув
-    cardItem.querySelector('.element__delete').addEventListener('click', this._removeCard);
-    //открытия картинки
-    cardItem.querySelector('.element__photo').addEventListener('click', this._handleImageClick(this._place.name, this._place.link));
-
-    container.append(cardItem);
+  _getTemplate() {
+    const cardElement = document.querySelector(this._cardSelector).content.cloneNode(true);
+    this._cardImage = cardElement.querySelector('.element__photo');
+    return cardElement;
   }
-
+  //like
   _handleLikeIcon(event) {
     event.target.classList.toggle('element__like_active');
   }
-
+  //del
   _removeCard(event) {
     event.target.closest('.element').remove();
   }
 
-  _handleImageClick = (name, link) => () => {
-    openPopup(popupImage);
-    popupImageSrc.src = link;
-    popupImageSrc.alt = name + '(фото)';
-    popupImageCaption.textContent = name;
+
+  _setEventListeners() {
+    this._element.querySelector('.element__like').addEventListener('click', this._handleLikeIcon);//like
+    this._element.querySelector('.element__delete').addEventListener('click', this._removeCard);//del
+    this._cardImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+    this._setEventListeners();
+    this._element.querySelector('.element__heading').textContent = this._name;
+    this._cardImage.src = this._link;
+
+
+    return this._element;
   }
 }
+
