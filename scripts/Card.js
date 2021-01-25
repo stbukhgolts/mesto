@@ -32,6 +32,7 @@ export class Card {
     this._setEventListeners();
     this._element.querySelector('.element__heading').textContent = this._name;
     this._cardImage.src = this._link;
+    this._cardImage.alt = `${this._name} (фото)`;
 
 
     return this._element;

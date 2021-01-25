@@ -41,7 +41,7 @@ formValidatorAdd.enableValidation();
 //функция открытия картинки
 function handleImageClick(name, link) {
   popupImageSrc.src = link;
-  popupImageSrc.alt = name + '(фото)';
+  popupImageSrc.alt = `${name} (фото)`;
   popupImageCaption.textContent = name;
   openPopup(popupImage);
 }
@@ -66,25 +66,28 @@ function closePopup(popupName) {
   document.removeEventListener('keydown', closeEscape);
 }
 
+//функция создания карточки
+function createCard(data, cardSelector, handleCardClick) {
+  const card = new Card(data, cardSelector, handleCardClick);
+  const newCard = card.generateCard();
+  return newCard
+}
+
+
 //фунция добавления карточки
 function handleFormAddCard(event) {
   event.preventDefault();
-  const card = new Card({ name: imgTitleInput.value, link: imgSrcInput.value }, '.template', handleImageClick);
-  const newCard = card.generateCard();
+  const newCard = createCard({ name: imgTitleInput.value, link: imgSrcInput.value }, '.template', handleImageClick);
   elements.append(newCard);
   closePopup(popupAdd);
-  popupFormAdd.reset();
-//кнопка активна
-  formValidatorAdd.enableValidation();
 }
 
 //открыть попап редактирования профиля
 function handleButtonEditClick() {
-  formValidatorEdit.enableValidation();
+  formValidatorEdit.resetValidation();
   openPopup(popupEdit);
   popupInputHeading.value = profileHeading.textContent;
   popupInputSubheading.value = profileSubheading.textContent;
-
 }
 
 //ввод заголовка и подзаголовка
@@ -93,13 +96,16 @@ function handleFormSubmit(event) {
   profileHeading.textContent = popupInputHeading.value;
   profileSubheading.textContent = popupInputSubheading.value;
   closePopup(popupEdit);
-
 }
 
 //открыть попап редактирования профайла
 profileButtonEdit.addEventListener('click', handleButtonEditClick);
 //открыть попап добавления места
-addButtonEdit.addEventListener('click', ()=>openPopup(popupAdd));
+addButtonEdit.addEventListener('click', ()=> {
+  popupFormAdd.reset();
+  formValidatorAdd.resetValidation();
+  openPopup(popupAdd)
+  });
 //ввод заголовка и подзаголовка
 popupFormEdit.addEventListener('submit', handleFormSubmit);
 //ввод места и урл
@@ -109,17 +115,17 @@ popupFormAdd.addEventListener('submit', handleFormAddCard);
 popups.forEach((popup) => {
     popup.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup_opened')) {
-            closePopup(popup)
+          closePopup(popup);
+            
         }
         if (evt.target.classList.contains('popup__button-close')) {
-          closePopup(popup)
+          closePopup(popup);
         }
     })
 });
 
 //экземпляр класса карточки в разметку
 initialCards.forEach((place) => {
-  const card = new Card(place, '.template', handleImageClick);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(place, '.template', handleImageClick);
   elements.append(cardElement);
 });
