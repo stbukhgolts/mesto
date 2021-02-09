@@ -7,8 +7,8 @@ import PopupWithImage from './components/PopupWithImage.js';
 import Section from './components/Section.js';
 import UserInfo from './components/UserInfo.js';
 
-export const profileHeading = document.querySelector('.profile__heading');
-export const profileSubheading = document.querySelector('.profile__subheading');
+const profileHeading = document.querySelector('.profile__heading');
+const profileSubheading = document.querySelector('.profile__subheading');
 
 const elements = '.elements';
 const profileButtonEdit = document.querySelector('.profile__button-edit');
@@ -41,19 +41,20 @@ const list = new Section({
 list.renderItems();
 
 //класс профиля
-const user = new UserInfo({ user: profileHeading.textContent, info: profileSubheading.textContent });
+const user = new UserInfo({ user: profileHeading, info: profileSubheading });
+
+
 
 //ввод заголовка и подзаголовка
-const handleProfileFormEditSubmit = () => {
-  const popupUser = new UserInfo({ user: popupInputHeading.value, info: popupInputSubheading.value });
-  popupUser.setUserInfo();
+const handleProfileFormEditSubmit = ({ heading, subheading }) => {
+  user.setUserInfo({ user: heading, info: subheading });
   popupEdit.close();
 }
 
 //фунция добавления карточки
 const handleFormAddCard = ({ place, src }) => {
   const newCard = createCard({ name: place, link: src }, '.template', handleImageClick);
-  list.addItem(newCard);
+  list.prependItem(newCard);
   popupAdd.close();
 }
 

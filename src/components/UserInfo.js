@@ -1,5 +1,3 @@
-import { profileHeading, profileSubheading } from '../index.js'
-
 export default class UserInfo {
   constructor({ user, info }) {
     this._user = user;
@@ -8,13 +6,13 @@ export default class UserInfo {
 
   getUserInfo() {
     return { 
-      user: profileHeading.textContent,
-      info: profileSubheading.textContent,
+      user: this._user.textContent,
+      info: this._info.textContent,
     }
   }
 
-  setUserInfo() {
-    profileHeading.textContent = this._user;
-    profileSubheading.textContent = this._info;
+  setUserInfo({ user, info }) {
+    this._user.textContent = user;
+    this._info.textContent = info;
   }
 }
