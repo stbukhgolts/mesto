@@ -11,6 +11,7 @@
 
 @import url(../blocks/profile/__name/profile__name.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__avatar-overlay/profile__\ avatar-overlay.css);
 @import url(../blocks/profile/__button-edit/profile__button-edit.css);
 
 @import url(../blocks/profile/__button-add/profile__button-add.css);
@@ -26,6 +27,8 @@
 @import url(../blocks/element/__heading/element__heading.css);
 @import url(../blocks/element/__like/element__like.css);
 @import url(../blocks/element/__like/_active/element__like_active.css);
+@import url(../blocks/element/__like-count/element__like-count.css);
+@import url(../blocks/element/__like-container/element__like-count.css);
 @import url(../blocks/element/__delete/element__delete.css);
 
 @import url(../blocks/footer/footer.css);

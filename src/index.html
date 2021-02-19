@@ -20,19 +20,20 @@
     <main class="main">
       <section class="profile">
         <div class="profile__description">
+          <div class="profile__avatar-overlay"></div>
           <img
             class="profile__avatar"
-            src="<%=require('./images/profile-avatar.jpg')%>"
+            src=""
             alt="аватар"
           />
 
           <div class="profile__info">
             <div class="profile__name">
-              <h1 class="profile__heading">Жак-Ив Кусто</h1>
+              <h1 class="profile__heading"></h1>
               <button type="button" class="profile__button-edit"></button>
             </div>
 
-            <p class="profile__subheading">Исследователь океана</p>
+            <p class="profile__subheading"></p>
           </div>
         </div>
 
@@ -45,6 +46,16 @@
     <footer class="footer">
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
+
+    <div class="popup popup_type_delete">
+      <div class="popup__container">
+        <button type="button" class="popup__button-close"></button>
+        <form class="popup__form popup__form_type_delete" name="form" novalidate>
+          <h2 class="popup__heading">Вы уверены?</h2>
+          <button class="popup__button-submit">Да</button>
+        </form>
+      </div>
+    </div>
 
     <div class="popup popup_type_edit">
       <div class="popup__container">
@@ -120,16 +131,55 @@
       </div>
     </div>
 
-    <template class="template">
+    <div class="popup popup_type_avatar">
+      <div class="popup__container">
+        <button
+          type="button"
+          class="popup__button-close"
+        ></button>
+        <form class="popup__form popup__form_type_add" name="form" novalidate>
+          <h2 class="popup__heading">Обновить аватар</h2>
+          <input
+            type="url"
+             
+            name="src"
+            class="popup__input popup__input_text_src"
+            id="place-url"
+            required
+          />
+          <span class="place-url-error error"></span>
+          <button class="popup__button-submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
+    <template class="template template_delete_present">
       <article class="element">
         <img class="element__photo" src="#" alt="фото места" />
         <div class="element__caption">
           <h2 class="element__heading">Место</h2>
-          <button type="button" class="element__like"></button>
+          <div class="element__like-container">
+            <button type="button" class="element__like"></button>
+            <p class="element__like-count">0</p>
+          </div>
         </div>
         <button type="button" class="element__delete"></button>
       </article>
     </template>
+    
+    <template class="template template_delete_empty">
+      <article class="element">
+        <img class="element__photo" src="#" alt="фото места" />
+        <div class="element__caption">
+          <h2 class="element__heading">Место</h2>
+          <div class="element__like-container">
+            <button type="button" class="element__like"></button>
+            <p class="element__like-count">0</p>
+          </div>
+        </div>
+      </article>
+    </template>
+
 
 
   </body>
