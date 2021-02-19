@@ -1,12 +1,12 @@
-import './pages/index.css'
-import { Card } from './components/Card.js';
-import { FormValidator } from './components/FormValidator.js';
-import PopupWithForm from './components/PopupWithForm.js';
-import PopupWithImage from './components/PopupWithImage.js';
-import Section from './components/Section.js';
-import UserInfo from './components/UserInfo.js';
-import Api from './components/Api.js';
-import PopupWithApprove from './components/PopupWithApprove.js';
+import './index.css'
+import { Card } from '../components/Card.js';
+import { FormValidator } from '../components/FormValidator.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import Section from '../components/Section.js';
+import UserInfo from '../components/UserInfo.js';
+import Api from '../components/Api.js';
+import PopupWithApprove from '../components/PopupWithApprove.js';
 
 const profileHeading = document.querySelector('.profile__heading');
 const profileSubheading = document.querySelector('.profile__subheading');
@@ -42,18 +42,16 @@ function handleLikeClick(cardId, element, event){
   if(event.target.classList.contains('element__like_active')){
   api
     .addLike(cardId)
-    .then(
-      element.querySelector('.element__like-count').textContent = parseInt(element.querySelector('.element__like-count').textContent)+1
-
-    )
+    .then((updatedCard) => {
+      element.querySelector('.element__like-count').textContent = updatedCard.likes.length;
+    })
     .catch((err)=>console.log(err));}
   else {
     api
     .removeLike(cardId)
-    .then(
-      element.querySelector('.element__like-count').textContent = parseInt(element.querySelector('.element__like-count').textContent)-1
-
-    )
+    .then((updatedCard) => {
+      element.querySelector('.element__like-count').textContent = updatedCard.likes.length;
+    })
     .catch((err)=>console.log(err));
   }
 }
@@ -88,14 +86,13 @@ api
   .catch(err=>console.log(err));
 
 //класс профиля
-const user = new UserInfo({ user: profileHeading, info: profileSubheading, userId: null });
+const user = new UserInfo({ user: profileHeading, info: profileSubheading, userId: null }, profileImage);
 
 //имя, эбаут + фото профиля с сервера
 api
   .getProfile('cohort-20/users/me')
   .then((data) => {
-    user.setUserInfo({ user: data.name, info: data.about, userId: data._id });
-    profileImage.src = data.avatar;
+    user.setUserInfo({ user: data.name, info: data.about, userId: data._id, avatar: data.avatar });
   })
   .catch(err=>console.log(err))
 
@@ -103,7 +100,7 @@ api
 
 //ввод редактирования профиля
 const handleProfileFormEditSubmit = ({ heading, subheading }, button) => {
-  user.setUserInfo({ user: heading, info: subheading });
+  user.setUserInfo({ user: heading, info: subheading, avatar: profileImage.src });
   button.textContent = 'Сохранение...';
   api
     .addProfile({ name: heading, about: subheading }, 'cohort-20/users/me')
@@ -148,13 +145,14 @@ function handleSaveAvatar({ src }, button) {
   button.textContent = 'Сохранение...';
   api
     .addAvatar({avatar: src}, 'cohort-20/users/me/avatar')
+    .then(data=>user.setUserInfo({ user: data.name, info: data.about, userId: data._id, avatar: src }))
     .catch((err)=>console.log(err))
     .finally(() => {
       button.textContent = 'Сохранить';
       popupAvatar.close();
     });
-  profileImage.src = src;
   
+ 
 }
 
 //попапы
