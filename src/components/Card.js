@@ -22,13 +22,13 @@ export class Card {
   //like
   _handleLikeIcon(event) {
     event.target.classList.toggle('element__like_active');
-
   }
 
   _setEventListeners() {
     this._element.querySelector('.element__like').addEventListener('click', (event) => {
       this._handleLikeIcon(event);
-      this._handleLikeClick(this._cardId, this._cardElementSelector, event);
+      const isLiked = event.target.classList.contains('element__like_active');
+      this._handleLikeClick(this._cardId, this._cardElementSelector, isLiked);
     });
     
     //delслушатель для своих карточек

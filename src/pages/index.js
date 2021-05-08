@@ -37,9 +37,9 @@ function handleDelete(cardId, element) {
   popupApproveDeleteCard.open(cardId, element);
 }
 
-function handleLikeClick(cardId, element, event){
+function handleLikeClick(cardId, element, isLiked){
 
-  if(event.target.classList.contains('element__like_active')){
+  if(isLiked){
   api
     .addLike(cardId)
     .then((updatedCard) => {
@@ -67,46 +67,36 @@ function createCard(data, cardSelector, handleCardClick, handleDeleteClick, hand
 const list = new Section({
   items: [],
   renderer: (place) => {
-      const cardElement = createCard(place, '.template', handleImageClick, handleDelete, handleLikeClick, user);
-      
+      const cardElement = createCard(place, '.template', handleImageClick, handleDelete, handleLikeClick, user);     
       list.addItem(cardElement);
     },
   },
   elements);
 
-//карточки с сервера
-api
-  .getInitialCards('cohort-20/cards')
-  .then((data) => { 
-    list.renderItems(data.map(item=>{
-         return { name: item.name, link: item.link, likes: item.likes, ownerId: item.owner._id, cardId: item._id }
-      }))
-    
-    })
+Promise.all([api.getProfile('cohort-20/users/me'), api.getInitialCards('cohort-20/cards')])
+  .then(([profileData, cards])=>{
+    user.setUserInfo({ user: profileData.name, info: profileData.about, userId: profileData._id, avatar: profileData.avatar });
+    list.renderItems(cards.map(item=>{
+      return { name: item.name, link: item.link, likes: item.likes, ownerId: item.owner._id, cardId: item._id }
+   }))
+  })
   .catch(err=>console.log(err));
 
-//класс профиля
 const user = new UserInfo({ user: profileHeading, info: profileSubheading, userId: null }, profileImage);
-
-//имя, эбаут + фото профиля с сервера
-api
-  .getProfile('cohort-20/users/me')
-  .then((data) => {
-    user.setUserInfo({ user: data.name, info: data.about, userId: data._id, avatar: data.avatar });
-  })
-  .catch(err=>console.log(err))
-
-
 
 //ввод редактирования профиля
 const handleProfileFormEditSubmit = ({ heading, subheading }, button) => {
   user.setUserInfo({ user: heading, info: subheading, avatar: profileImage.src });
+/*   const loadElement = document.createElement('div');
+  loadElement.classList.add('water');
+  button.replaceWith(loadElement); */
   button.textContent = 'Сохранение...';
   api
     .addProfile({ name: heading, about: subheading }, 'cohort-20/users/me')
+    .then(popupEdit.close())
     .catch((err)=>console.log(err))
     .finally(() => {
-      popupEdit.close();
+      loadElement.replaceWith(button);
       button.textContent = 'Сохранить';
     })
 
@@ -121,11 +111,11 @@ const handleFormAddCard = ({ place, src }, button) => {
       const newCard = createCard({ name: place, link: src, likes: [], ownerId: data.owner._id, cardId: data._id }, '.template', handleImageClick, handleDelete, handleLikeClick, user);
   
       list.prependItem(newCard);
+      popupAdd.close();
     })
     .catch((err)=>console.log(err))
     .finally(() => {
       button.textContent = 'Создать';
-      popupAdd.close();
     })
 
   
@@ -145,14 +135,13 @@ function handleSaveAvatar({ src }, button) {
   button.textContent = 'Сохранение...';
   api
     .addAvatar({avatar: src}, 'cohort-20/users/me/avatar')
-    .then(data=>user.setUserInfo({ user: data.name, info: data.about, userId: data._id, avatar: src }))
+    .then(data=>user.setUserInfo({ user: data.name, info: data.about, userId: data._id, avatar: src })
+    )
+    .then(popupAvatar.close())
     .catch((err)=>console.log(err))
     .finally(() => {
       button.textContent = 'Сохранить';
-      popupAvatar.close();
     });
-  
- 
 }
 
 //попапы
@@ -197,7 +186,7 @@ function handleProfileButtonEditClick() {
 profileButtonEdit.addEventListener('click', handleProfileButtonEditClick);
 
 //открыть попап добавления места
-addButtonEdit.addEventListener('click', ()=> {
+addButtonEdit.addEventListener('click', () => {
   formValidatorAdd.resetValidation();
   popupAdd.open();
   }
